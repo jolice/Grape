@@ -7,6 +7,7 @@ import me.riguron.grape.bean.registry.BeanQuery;
 import me.riguron.grape.bean.registry.ManagedBean;
 import me.riguron.grape.bean.registry.Registry;
 import me.riguron.grape.bean.scan.ComponentScan;
+import me.riguron.grape.lifecycle.LifecycleCallbackFactory;
 import me.riguron.grape.loader.BeanDefinitionRegistration;
 import me.riguron.grape.loader.ClassListBeanDefinitionLoader;
 import me.riguron.grape.loader.ConfigurationBeanDefinitionLoader;
@@ -15,6 +16,8 @@ import me.riguron.grape.reflection.MethodInvoker;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Grape {
 
@@ -47,17 +50,20 @@ public class Grape {
     }
 
     private void initializeLifecycle() {
-        LifecycleManagement lifecycleManagement = new LifecycleManagement(methodInvoker, beanRegistry);
+        LifecycleManagement lifecycleManagement = new LifecycleManagement(beanRegistry, Runtime.getRuntime(),
+                new LifecycleCallbackFactory(methodInvoker));
         lifecycleManagement.triggerBeanInitialization();
         lifecycleManagement.registerShutdownCallbacks();
     }
 
     private void loadDefinitions() {
         BeanDefinitionRegistration beanDefinitionRegistration = new BeanDefinitionRegistration(beanDefinitionRegistry);
-        ClassListBeanDefinitionLoader classListBeanLoader = new ClassListBeanDefinitionLoader(beanDefinitionRegistration, constructorLookup, getAllDefiningClasses());
-        ConfigurationBeanDefinitionLoader configurationBeanLoader = new ConfigurationBeanDefinitionLoader(methodInvoker, grapeConfiguration.getConfigurations(), beanDefinitionRegistration);
-        classListBeanLoader.load();
-        configurationBeanLoader.load();
+        ClassListBeanDefinitionLoader classListBeanLoader = new ClassListBeanDefinitionLoader(constructorLookup, getAllDefiningClasses());
+        ConfigurationBeanDefinitionLoader configurationBeanLoader = new ConfigurationBeanDefinitionLoader(methodInvoker, grapeConfiguration.getConfigurations());
+
+        Stream.concat(classListBeanLoader.load().stream(), configurationBeanLoader.load().stream())
+                .collect(Collectors.toSet())
+                .forEach(beanDefinition -> beanDefinitionRegistration.register(beanDefinition.getBeanClass(), beanDefinition));
     }
 
     private Set<Class<?>> getAllDefiningClasses() {
@@ -72,7 +78,7 @@ public class Grape {
 
     @SuppressWarnings("unchecked")
     public <T> T getBean(BeanQuery beanQuery) {
-        return (T) beanRegistry.get(beanQuery).getBean();
+        return (T) beanRegistry.get(beanQuery).getBeanInstance();
     }
 
 }

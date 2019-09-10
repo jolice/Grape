@@ -11,7 +11,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 
 @RequiredArgsConstructor
-public class SetterInjection implements Injection {
+public class MethodInjection implements Injection {
 
     private final BeanLookup<ManagedBean> beanRegistry;
     private final MethodInvoker methodInvoker;
@@ -23,7 +23,7 @@ public class SetterInjection implements Injection {
                 Object[] targetBeanParams = new Object[method.getParameterCount()];
                 Parameter[] parameters = method.getParameters();
                 for (int i = 0; i < parameters.length; i++) {
-                    targetBeanParams[i] = beanRegistry.lookup(parameters[i].getType(), o.getClass(), parameters[i]).getBean();
+                    targetBeanParams[i] = beanRegistry.lookup(parameters[i].getType(), o.getClass(), parameters[i]).getBeanInstance();
                 }
 
                 methodInvoker.invoke(o, method, targetBeanParams);

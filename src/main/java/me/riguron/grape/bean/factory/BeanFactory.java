@@ -26,7 +26,7 @@ public class BeanFactory {
             List<Object> constructorArguments = new ArrayList<>();
             for (Dependency dependency : dependencies) {
                 ManagedBean response = beanProvider.lookup(dependency.getType(), beanType, dependency.getAnnotatedElement());
-                constructorArguments.add(response.getBean());
+                constructorArguments.add(response.getBeanInstance());
             }
             Object bean = constructor.createBean(constructorArguments);
             registry.put(beanType, new ManagedBean(bean, beanDefinition.getAnnotationData()));

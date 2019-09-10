@@ -13,7 +13,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class SetterInjectionTest {
+class MethodInjectionTest {
 
     private final BeanLookup<ManagedBean> lookup = mock(BeanLookup.class);
 
@@ -25,8 +25,8 @@ class SetterInjectionTest {
         putBean(1.5D, "d");
 
         Sample sample = new Sample();
-        SetterInjection setterInjection =  new SetterInjection(lookup, new MethodInvoker());
-        setterInjection.inject(sample);
+        MethodInjection methodInjection =  new MethodInjection(lookup, new MethodInvoker());
+        methodInjection.inject(sample);
 
 
         assertEquals("x", sample.x);

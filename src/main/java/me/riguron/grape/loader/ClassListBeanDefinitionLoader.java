@@ -6,27 +6,31 @@ import me.riguron.grape.provider.ConstructorProvider;
 import me.riguron.grape.reflection.ConstructorLookup;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class ClassListBeanDefinitionLoader implements BeanDefinitionLoader {
 
-    private BeanDefinitionRegistration beanDefinitionRegistration;
     private ConstructorLookup constructorLookup;
     private Set<Class<?>> beans;
 
     @Override
-    public void load() {
-        for (Class<?> bean : beans) {
-            Optional<Constructor<?>> injectConstructor = constructorLookup.getInjectConstructor(bean);
-            Constructor<?> constructor = injectConstructor
-                    .orElseGet(() -> constructorLookup.getEmptyConstructor(bean)
-                            .orElseThrow(() -> new IllegalStateException("No constructor present for the injection: " + bean)));
+    public List<BeanDefinition> load() {
+        return beans
+                .stream()
+                .map(this::findConstructor)
+                .map(x -> new BeanDefinition(x.getDeclaringClass(), new ConstructorProvider(x), x.getDeclaringClass()))
+                .collect(Collectors.toList());
+    }
 
+    private Constructor<?> findConstructor(Class<?> beanType) {
+        final Optional<Constructor<?>> injectConstructor = constructorLookup.getInjectConstructor(beanType);
+        return injectConstructor
+                .orElseGet(() -> constructorLookup.getEmptyConstructor(beanType)
+                        .orElseThrow(() -> new IllegalStateException("No constructor present for the injection: " + beanType)));
 
-
-            beanDefinitionRegistration.register(bean, new BeanDefinition(bean, new ConstructorProvider(constructor), bean));
-        }
     }
 }

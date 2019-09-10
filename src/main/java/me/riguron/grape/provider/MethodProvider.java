@@ -6,7 +6,6 @@ import me.riguron.grape.reflection.MethodInvoker;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,12 +24,9 @@ public class MethodProvider implements InstanceProvider {
 
     @Override
     public List<Dependency> getDependencies() {
-        List<Dependency> list = new ArrayList<>();
-        for (Parameter x : beanDeclaration.getParameters()) {
-            Dependency dependency = new Dependency(x.getType(), x);
-            list.add(dependency);
-        }
-        return list;
+        return Arrays.stream(beanDeclaration.getParameters())
+                .map(x -> new Dependency(x.getType(), x))
+                .collect(Collectors.toList());
     }
 
     @Override

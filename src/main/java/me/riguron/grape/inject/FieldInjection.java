@@ -19,7 +19,7 @@ public class FieldInjection implements Injection {
                 if (!field.isAccessible()) {
                     field.setAccessible(true);
                 }
-                Object fieldValue = beanRegistry.lookup(field.getType(), o.getClass(), field).getBean();
+                Object fieldValue = beanRegistry.lookup(field.getType(), o.getClass(), field).getBeanInstance();
                 try {
                     field.set(o, fieldValue);
                 } catch (IllegalAccessException e) {

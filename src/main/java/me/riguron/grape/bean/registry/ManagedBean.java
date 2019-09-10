@@ -1,18 +1,21 @@
 package me.riguron.grape.bean.registry;
 
-import lombok.Value;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 import me.riguron.grape.bean.BeanMeta;
 
 import java.lang.reflect.AnnotatedElement;
 
-@Value
+@Data
+@Setter(AccessLevel.NONE)
 public class ManagedBean implements BeanMeta {
 
-    private Object bean;
-    private AnnotatedElement annotationData;
+    private final Object beanInstance;
+    private final AnnotatedElement annotationData;
 
     @Override
     public Class<?> getBeanClass() {
-        return bean.getClass();
+        return beanInstance.getClass();
     }
 }

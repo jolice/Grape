@@ -9,6 +9,8 @@ import me.riguron.grape.reflection.MethodInvoker;
 import javax.enterprise.inject.Produces;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -16,16 +18,16 @@ public class ConfigurationBeanDefinitionLoader implements BeanDefinitionLoader {
 
     private final MethodInvoker methodInvoker;
     private final Set<Configuration> configurations;
-    private final BeanDefinitionRegistration beanDefinitionRegistration;
 
     @Override
-    public void load() {
+    public List<BeanDefinition> load() {
+        List<BeanDefinition> result = new ArrayList<>();
         for (Configuration object : configurations) {
             for (Method x : object.getClass().getDeclaredMethods()) {
                 if (Modifier.isPublic(x.getModifiers())) {
                     if (x.isAnnotationPresent(Produces.class)) {
                         if (!x.getReturnType().equals(void.class)) {
-                            beanDefinitionRegistration.register(x.getReturnType(), new BeanDefinition(
+                            result.add(new BeanDefinition(
                                     x.getReturnType(), new MethodProvider(
                                     x, object, methodInvoker), x));
                         }
@@ -33,6 +35,6 @@ public class ConfigurationBeanDefinitionLoader implements BeanDefinitionLoader {
                 }
             }
         }
-
+        return result;
     }
 }

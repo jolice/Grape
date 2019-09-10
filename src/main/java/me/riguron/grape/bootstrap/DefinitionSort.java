@@ -19,15 +19,13 @@ public class DefinitionSort {
 
     public List<BeanDefinition> getOrderedBeanDefinitions() {
         DependencyGraph dependencyGraph = new DependencyGraph(lookup);
-
-
         beanDefinitionRegistry.getAll().forEach(dependencyGraph::addNode);
         beanDefinitionRegistry.getAll().forEach(dependencyGraph::addEdge);
         TopologicalSort<BeanDefinition> topologicalSort = new TopologicalSort<>(dependencyGraph.getGraph());
         try {
             return topologicalSort.sort();
         } catch (GraphCycleException e) {
-            throw new CircularDependencyException(e.getItem());
+            throw new CircularDependencyException(e.getFrom(), e.getTo());
         }
     }
 }

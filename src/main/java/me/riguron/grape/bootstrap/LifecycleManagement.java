@@ -4,25 +4,24 @@ import lombok.RequiredArgsConstructor;
 import me.riguron.grape.bean.registry.ManagedBean;
 import me.riguron.grape.bean.registry.Registry;
 import me.riguron.grape.lifecycle.LifecycleCallback;
-import me.riguron.grape.lifecycle.type.PostConstructAction;
-import me.riguron.grape.lifecycle.type.PreDestroyAction;
-import me.riguron.grape.reflection.MethodInvoker;
+import me.riguron.grape.lifecycle.LifecycleCallbackFactory;
 
 @RequiredArgsConstructor
 public class LifecycleManagement {
 
-    private final MethodInvoker methodInvoker;
     private final Registry<ManagedBean> beanRegistry;
+    private final Runtime runtime;
+    private final LifecycleCallbackFactory lifecycleCallbackFactory;
 
     public void triggerBeanInitialization() {
-        LifecycleCallback postConstruct = new LifecycleCallback(methodInvoker, new PostConstructAction());
-        beanRegistry.getAll().forEach(postConstruct::trigger);
+        LifecycleCallback postConstruct = lifecycleCallbackFactory.postConstructCallback();
+        beanRegistry.getAll().stream().map(ManagedBean::getBeanInstance).forEach(postConstruct::trigger);
     }
 
     public void registerShutdownCallbacks() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            LifecycleCallback preDestroy = new LifecycleCallback(methodInvoker, new PreDestroyAction());
-            beanRegistry.getAll().forEach(preDestroy::trigger);
+        runtime.addShutdownHook(new Thread(() -> {
+            LifecycleCallback preDestroy = lifecycleCallbackFactory.preDestroyCallback();
+            beanRegistry.getAll().stream().map(ManagedBean::getBeanInstance).forEach(preDestroy::trigger);
         }));
     }
 }

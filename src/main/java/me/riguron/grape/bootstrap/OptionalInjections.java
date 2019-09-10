@@ -5,7 +5,7 @@ import me.riguron.grape.bean.BeanLookup;
 import me.riguron.grape.bean.registry.ManagedBean;
 import me.riguron.grape.inject.BeanInjection;
 import me.riguron.grape.inject.FieldInjection;
-import me.riguron.grape.inject.SetterInjection;
+import me.riguron.grape.inject.MethodInjection;
 import me.riguron.grape.reflection.MethodInvoker;
 
 @RequiredArgsConstructor
@@ -17,8 +17,8 @@ public class OptionalInjections {
     public void doInject() {
         BeanInjection beanInjection = new BeanInjection(
                 new FieldInjection(beanLookup),
-                new SetterInjection(beanLookup, methodInvoker)
+                new MethodInjection(beanLookup, methodInvoker)
         );
-        beanLookup.getAll().forEach(registeredBean -> beanInjection.inject(registeredBean.getBean()));
+        beanLookup.getAll().forEach(registeredBean -> beanInjection.inject(registeredBean.getBeanInstance()));
     }
 }

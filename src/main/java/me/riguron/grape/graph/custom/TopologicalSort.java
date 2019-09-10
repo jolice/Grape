@@ -42,7 +42,7 @@ public class TopologicalSort<V> {
 
     private void checkLoop(V item, V parent) {
         if (item == parent) {
-            throw new GraphCycleException(item + " > " + parent);
+            throw new GraphCycleException(item, parent);
         }
     }
 
