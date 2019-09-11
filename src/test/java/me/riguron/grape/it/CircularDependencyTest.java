@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -23,7 +22,7 @@ class CircularDependencyTest {
         Grape grape = new Grape(
                 new GrapeConfiguration()
                         .classes(
-                                new HashSet<>(Arrays.asList(Left.class, Right.class))
+                               Arrays.asList(Left.class, Right.class)
                         )
         );
 
@@ -36,7 +35,7 @@ class CircularDependencyTest {
         Grape grape = new Grape(
                 new GrapeConfiguration()
                         .classes(
-                                new HashSet<>(Arrays.asList(One.class, Two.class))
+                                Arrays.asList(One.class, Two.class)
                         )
         );
 
@@ -49,7 +48,7 @@ class CircularDependencyTest {
         Grape grape = new Grape(
                 new GrapeConfiguration()
                 .classes(
-                        Collections.singleton(SelfCycle.class)
+                        Collections.singletonList(SelfCycle.class)
                 )
         );
 

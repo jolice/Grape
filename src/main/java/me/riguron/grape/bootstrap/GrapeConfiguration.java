@@ -4,7 +4,9 @@ import lombok.Getter;
 import me.riguron.grape.bean.Configuration;
 import me.riguron.grape.bean.scan.ComponentScan;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,8 +39,8 @@ public class GrapeConfiguration {
      * @param classes bean classes
      * @return current configuration instance
      */
-    public GrapeConfiguration classes(Set<Class<?>> classes) {
-        this.classes = classes;
+    public GrapeConfiguration classes(List<Class<?>> classes) {
+        this.classes = Collections.unmodifiableSet(new HashSet<>(classes));
         return this;
     }
 
@@ -48,8 +50,8 @@ public class GrapeConfiguration {
      * @param configurations bean configurations
      * @return current configuration instance
      */
-    public GrapeConfiguration configurations(Set<Configuration> configurations) {
-        this.configurations = configurations;
+    public GrapeConfiguration configurations(List<Configuration> configurations) {
+        this.configurations = Collections.unmodifiableSet(new HashSet<>(configurations));
         return this;
     }
 

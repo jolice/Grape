@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -20,7 +19,7 @@ public class FieldInjectionTest {
 
         Grape grape = new Grape(
                 new GrapeConfiguration()
-                        .classes(new HashSet<>(Arrays.asList(A.class, B.class, C1.class, C2.class)))
+                        .classes(Arrays.asList(A.class, B.class, C1.class, C2.class))
 
         );
 

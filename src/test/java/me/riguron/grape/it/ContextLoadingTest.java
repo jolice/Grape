@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.util.Collections;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,7 +24,7 @@ class ContextLoadingTest {
         Grape grape = new Grape(
                 new GrapeConfiguration()
                         .scan("me.riguron.grape.it.classes")
-                        .configurations(new HashSet<>(Collections.singletonList(new TestConfiguration())))
+                        .configurations(Collections.singletonList(new TestConfiguration()))
         );
         this.context = grape.createContext();
     }

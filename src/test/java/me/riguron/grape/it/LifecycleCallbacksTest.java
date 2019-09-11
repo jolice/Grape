@@ -9,7 +9,6 @@ import org.junit.jupiter.api.TestInstance;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,7 +22,7 @@ class LifecycleCallbacksTest {
 
         Grape grape = new Grape(
                 new GrapeConfiguration()
-                        .classes(new HashSet<>(Collections.singletonList(Component.class)))
+                        .classes(Collections.singletonList(Component.class))
         );
 
         final Context context = grape.createContext();

@@ -11,7 +11,6 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,7 +21,8 @@ public class PrimaryDependencyTest {
 
         Grape grape = new Grape(
                 new GrapeConfiguration()
-                        .classes(new HashSet<>(Arrays.asList(Client.class, One.class, Two.class)))
+                        .classes(Arrays.asList(Client.class, One.class, Two.class))
+
         );
 
         assertEquals(Two.class, grape.createContext().getBean(Client.class).instance.getClass());
@@ -34,7 +34,7 @@ public class PrimaryDependencyTest {
 
         Grape grape = new Grape(
                 new GrapeConfiguration()
-                .configurations(new HashSet<>(Collections.singletonList(new Config())))
+                .configurations(Collections.singletonList(new Config()))
         );
 
         assertEquals(Two.class, grape.createContext().getBean(Client.class).instance.getClass());

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -20,7 +19,7 @@ public class ClassBeanDeclarationTest {
 
         Grape grape = new Grape(
                 new GrapeConfiguration()
-                        .classes(new HashSet<>(Arrays.asList(A.class, First.class, Second.class)))
+                        .classes(Arrays.asList(A.class, First.class, Second.class))
         );
 
         final Context context = grape.createContext();
