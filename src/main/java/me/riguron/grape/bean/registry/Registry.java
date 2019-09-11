@@ -6,7 +6,10 @@ import me.riguron.grape.exception.dependency.AmbiguousDependencyException;
 import me.riguron.grape.exception.dependency.UnsatisfiedDependencyException;
 import me.riguron.grape.exception.injection.InjectionPointError;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Registry<T extends BeanMeta> {
@@ -27,27 +30,39 @@ public class Registry<T extends BeanMeta> {
     }
 
     private T handleCollection(BeanQuery beanQuery, List<T> items) {
-        Optional<T> result = items.stream().filter(beanQuery.getBeanMatcher()::matches).findFirst();
-        if (result.isPresent()) {
-            return result.get();
+        List<T> result = items.stream().filter(beanQuery.getBeanMatcher()::matches).collect(Collectors.toList());
+        if (result.size() == 1) {
+            return result.get(0);
         } else {
-            if (beanQuery.getBindingPolicy().isMandatory()) {
-                return fail(beanQuery, beanQuery.getBindingPolicy().unsatisfiedError().exception());
-            } else {
-                if (items.size() > 1) {
-                    return fail(beanQuery, new AmbiguousDependencyException("Multiple beans of type " + beanQuery.getType() + " found, which one is undefined"));
+            if (result.isEmpty()) {
+                if (beanQuery.getBindingPolicy().isMandatory()) {
+                    return fail(beanQuery, beanQuery.getBindingPolicy().unsatisfiedError().exception());
                 } else {
-                    return items.get(0);
+                    return optionalGet(items, beanQuery);
                 }
+            } else {
+                return optionalGet(result, beanQuery);
             }
         }
+    }
+
+    private T optionalGet(List<T> result, BeanQuery query) {
+        if (result.size() > 1) {
+            return fail(query, new AmbiguousDependencyException("Multiple beans of type " + query.getType() + " found, which one is undefined"));
+        } else {
+            return result.get(0);
+        }
+    }
+
+    private T failNoBeans(BeanQuery beanQuery) {
+        return fail(beanQuery, new UnsatisfiedDependencyException("No beans of type " + beanQuery.getType() + " found"));
     }
 
     private T handleNoData(BeanQuery beanQuery) {
         if (beanQuery.getBindingPolicy().isMandatory()) {
             return fail(beanQuery, beanQuery.getBindingPolicy().unsatisfiedError().exception());
         } else {
-            return fail(beanQuery, new UnsatisfiedDependencyException("No beans of type " + beanQuery.getType() + " found"));
+            return failNoBeans(beanQuery);
         }
     }
 

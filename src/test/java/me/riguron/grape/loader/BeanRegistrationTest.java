@@ -9,7 +9,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-class BeanDefinitionRegistrationTest {
+class BeanRegistrationTest {
 
     @Test
     void whenRegisterNonImplementorThenTypeRegistered() {
@@ -17,11 +17,11 @@ class BeanDefinitionRegistrationTest {
 
         Registry<BeanDefinition> registry = mock(Registry.class);
 
-        BeanDefinitionRegistration beanDefinitionRegistration
-                = new BeanDefinitionRegistration(registry);
+        BeanRegistration beanRegistration
+                = new BeanRegistration(registry);
 
 
-        beanDefinitionRegistration.register(DoesNotImplement.class,
+        beanRegistration.register(DoesNotImplement.class,
                 mock(BeanDefinition.class));
 
         verify(registry).put(eq(DoesNotImplement.class), any());
@@ -32,11 +32,11 @@ class BeanDefinitionRegistrationTest {
 
         Registry<BeanDefinition> registry = mock(Registry.class);
 
-        BeanDefinitionRegistration beanDefinitionRegistration
-                = new BeanDefinitionRegistration(registry);
+        BeanRegistration beanRegistration
+                = new BeanRegistration(registry);
 
 
-        beanDefinitionRegistration.register(Impl.class, mock(BeanDefinition.class)
+        beanRegistration.register(Impl.class, mock(BeanDefinition.class)
         );
 
         verify(registry).put(eq(Interface.class), any());

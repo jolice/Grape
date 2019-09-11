@@ -1,5 +1,7 @@
 package me.riguron.grape.bean;
 
+import me.riguron.grape.bean.lookup.BeanLookup;
+import me.riguron.grape.bean.lookup.LookupParams;
 import me.riguron.grape.bean.registry.Registry;
 import me.riguron.grape.provider.InstanceProvider;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class BeanLookupTest {
+class LookupParamsTest {
 
     @Test
     void whenNotPolymorphicType() {
@@ -42,7 +44,7 @@ class BeanLookupTest {
         BeanLookup beanLookup = new BeanLookup(registry);
 
         assertEquals(storeType, beanLookup.lookup(
-                queryType, String.class, mock(AnnotatedElement.class)
+                queryType, String.class, mock(LookupParams.class)
         ).getBeanClass());
     }
 

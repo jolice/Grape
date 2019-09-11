@@ -1,6 +1,6 @@
 package me.riguron.grape.inject;
 
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
 import me.riguron.grape.bean.registry.ManagedBean;
 import me.riguron.grape.reflection.MethodInvoker;
 import org.junit.jupiter.api.Test;

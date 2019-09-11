@@ -1,14 +1,13 @@
 package me.riguron.grape.bootstrap;
 
 import me.riguron.grape.bean.BeanDefinition;
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
 import me.riguron.grape.bean.factory.BeanFactory;
-import me.riguron.grape.bean.registry.BeanQuery;
 import me.riguron.grape.bean.registry.ManagedBean;
 import me.riguron.grape.bean.registry.Registry;
 import me.riguron.grape.bean.scan.ComponentScan;
 import me.riguron.grape.lifecycle.LifecycleCallbackFactory;
-import me.riguron.grape.loader.BeanDefinitionRegistration;
+import me.riguron.grape.loader.BeanRegistration;
 import me.riguron.grape.loader.ClassListBeanDefinitionLoader;
 import me.riguron.grape.loader.ConfigurationBeanDefinitionLoader;
 import me.riguron.grape.reflection.ConstructorLookup;
@@ -26,10 +25,15 @@ public class Grape {
     private final Registry<BeanDefinition> beanDefinitionRegistry = new Registry<>();
     private final Registry<ManagedBean> beanRegistry = new Registry<>();
     private final GrapeConfiguration grapeConfiguration;
+    private Context context;
 
     public Grape(GrapeConfiguration grapeConfiguration) {
         this.grapeConfiguration = grapeConfiguration;
+    }
+
+    public Context createContext() {
         this.create();
+        return this.context;
     }
 
     private void create() {
@@ -38,15 +42,17 @@ public class Grape {
         BeanLookup<ManagedBean> beanLookup = new BeanLookup<>(beanRegistry);
 
         DefinitionSort definitionSort = new DefinitionSort(beanDefinitionRegistry, lookup);
+        BeanRegistration<ManagedBean> registration = new BeanRegistration<>(beanRegistry);
         BeanFactory beanFactory = new BeanFactory(
                 beanLookup,
-                beanRegistry,
+                registration,
                 definitionSort.getOrderedBeanDefinitions()
         );
         beanFactory.createBeans();
         OptionalInjections optionalInjections = new OptionalInjections(beanLookup, methodInvoker);
         optionalInjections.doInject();
         this.initializeLifecycle();
+        this.context = new Context(beanRegistry, beanLookup);
     }
 
     private void initializeLifecycle() {
@@ -57,13 +63,13 @@ public class Grape {
     }
 
     private void loadDefinitions() {
-        BeanDefinitionRegistration beanDefinitionRegistration = new BeanDefinitionRegistration(beanDefinitionRegistry);
+        BeanRegistration<BeanDefinition> beanRegistration = new BeanRegistration<>(beanDefinitionRegistry);
         ClassListBeanDefinitionLoader classListBeanLoader = new ClassListBeanDefinitionLoader(constructorLookup, getAllDefiningClasses());
         ConfigurationBeanDefinitionLoader configurationBeanLoader = new ConfigurationBeanDefinitionLoader(methodInvoker, grapeConfiguration.getConfigurations());
 
         Stream.concat(classListBeanLoader.load().stream(), configurationBeanLoader.load().stream())
                 .collect(Collectors.toSet())
-                .forEach(beanDefinition -> beanDefinitionRegistration.register(beanDefinition.getBeanClass(), beanDefinition));
+                .forEach(beanDefinition -> beanRegistration.register(beanDefinition.getBeanClass(), beanDefinition));
     }
 
     private Set<Class<?>> getAllDefiningClasses() {
@@ -76,10 +82,6 @@ public class Grape {
         return finalClasses;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T getBean(BeanQuery beanQuery) {
-        return (T) beanRegistry.get(beanQuery).getBeanInstance();
-    }
 
 }
 

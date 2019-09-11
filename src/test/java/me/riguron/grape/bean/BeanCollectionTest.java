@@ -14,9 +14,9 @@ class BeanCollectionTest {
 
         BeanCollection<String> beanCollection = new BeanCollection<>();
 
-        beanCollection.add("1");
-        beanCollection.add("2");
-        beanCollection.add("3");
+        beanCollection.put("1");
+        beanCollection.put("2");
+        beanCollection.put("3");
 
         Iterator<String> iterator = beanCollection.iterator();
         assertNextElement("1", iterator);

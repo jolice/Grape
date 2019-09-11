@@ -2,10 +2,11 @@ package me.riguron.grape.bean.factory;
 
 import lombok.RequiredArgsConstructor;
 import me.riguron.grape.bean.BeanDefinition;
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
+import me.riguron.grape.bean.lookup.StandardLookupParams;
 import me.riguron.grape.bean.registry.ManagedBean;
-import me.riguron.grape.bean.registry.Registry;
 import me.riguron.grape.dependency.Dependency;
+import me.riguron.grape.loader.BeanRegistration;
 import me.riguron.grape.provider.InstanceProvider;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
 public class BeanFactory {
 
     private final BeanLookup<ManagedBean> beanProvider;
-    private final Registry<ManagedBean> registry;
+    private final BeanRegistration<ManagedBean> registration;
     private final List<BeanDefinition> definitions;
 
     public void createBeans() {
@@ -25,11 +26,11 @@ public class BeanFactory {
             List<Dependency> dependencies = constructor.getDependencies();
             List<Object> constructorArguments = new ArrayList<>();
             for (Dependency dependency : dependencies) {
-                ManagedBean response = beanProvider.lookup(dependency.getType(), beanType, dependency.getAnnotatedElement());
+                ManagedBean response = beanProvider.lookup(dependency.getType(), beanType, new StandardLookupParams(dependency.getAnnotatedElement()));
                 constructorArguments.add(response.getBeanInstance());
             }
             Object bean = constructor.createBean(constructorArguments);
-            registry.put(beanType, new ManagedBean(bean, beanDefinition.getAnnotationData()));
+            registration.register(beanType, new ManagedBean(bean, beanDefinition.getAnnotationData()));
         }
     }
 

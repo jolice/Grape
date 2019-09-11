@@ -2,7 +2,7 @@ package me.riguron.grape.bootstrap;
 
 import lombok.RequiredArgsConstructor;
 import me.riguron.grape.bean.BeanDefinition;
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
 import me.riguron.grape.bean.registry.Registry;
 import me.riguron.grape.exception.dependency.CircularDependencyException;
 import me.riguron.grape.exception.GraphCycleException;

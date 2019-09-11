@@ -1,6 +1,7 @@
 package me.riguron.grape.inject;
 
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
+import me.riguron.grape.bean.lookup.StandardLookupParams;
 import me.riguron.grape.bean.registry.ManagedBean;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +40,7 @@ class FieldInjectionTest {
 
     private void putBean(Object o, String name) throws NoSuchFieldException {
 
-        when(lookup.lookup(eq(o.getClass()), any(), eq(Sample.class.getDeclaredField(name))))
+        when(lookup.lookup(eq(o.getClass()), any(), eq(new StandardLookupParams(Sample.class.getDeclaredField(name)))))
                 .thenReturn(
                         createBean(o)
                 );

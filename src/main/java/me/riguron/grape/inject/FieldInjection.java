@@ -1,7 +1,8 @@
 package me.riguron.grape.inject;
 
 import lombok.RequiredArgsConstructor;
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
+import me.riguron.grape.bean.lookup.StandardLookupParams;
 import me.riguron.grape.bean.registry.ManagedBean;
 
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ public class FieldInjection implements Injection {
                 if (!field.isAccessible()) {
                     field.setAccessible(true);
                 }
-                Object fieldValue = beanRegistry.lookup(field.getType(), o.getClass(), field).getBeanInstance();
+                Object fieldValue = beanRegistry.lookup(field.getType(), o.getClass(), new StandardLookupParams(field)).getBeanInstance();
                 try {
                     field.set(o, fieldValue);
                 } catch (IllegalAccessException e) {

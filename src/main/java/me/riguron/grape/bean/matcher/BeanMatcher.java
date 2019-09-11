@@ -18,4 +18,5 @@ public interface BeanMatcher {
      */
     boolean matches(BeanMeta registeredBean);
 
+
 }

@@ -1,7 +1,7 @@
 package me.riguron.grape.bootstrap;
 
 import lombok.RequiredArgsConstructor;
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
 import me.riguron.grape.bean.registry.ManagedBean;
 import me.riguron.grape.inject.BeanInjection;
 import me.riguron.grape.inject.FieldInjection;

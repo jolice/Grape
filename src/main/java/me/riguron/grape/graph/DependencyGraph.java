@@ -1,7 +1,8 @@
 package me.riguron.grape.graph;
 
 import me.riguron.grape.bean.BeanDefinition;
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
+import me.riguron.grape.bean.lookup.StandardLookupParams;
 import me.riguron.grape.dependency.Dependency;
 import me.riguron.grape.graph.custom.Graph;
 
@@ -17,7 +18,7 @@ public class DependencyGraph {
 
     public void addEdge(BeanDefinition node) {
         for (Dependency dependency : node.getConstructor().getDependencies()) {
-            graph.addEdge(node, beanLookup.lookup(dependency.getType(), node.getBeanClass(), dependency.getAnnotatedElement()));
+            graph.addEdge(node, beanLookup.lookup(dependency.getType(), node.getBeanClass(), new StandardLookupParams(dependency.getAnnotatedElement())));
         }
     }
 

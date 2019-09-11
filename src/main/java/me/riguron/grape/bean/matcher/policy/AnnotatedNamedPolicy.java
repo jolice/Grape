@@ -12,9 +12,10 @@ import java.lang.reflect.AnnotatedElement;
  * with the specified name, otherwise fails.
  */
 @RequiredArgsConstructor
-public class NamedPolicy implements BindingPolicy {
+public class AnnotatedNamedPolicy implements BindingPolicy {
 
     private final AnnotatedElement target;
+
 
     @Override
     public boolean isMandatory() {

@@ -23,13 +23,13 @@ public class ConfigurationBeanDefinitionLoader implements BeanDefinitionLoader {
     public List<BeanDefinition> load() {
         List<BeanDefinition> result = new ArrayList<>();
         for (Configuration object : configurations) {
-            for (Method x : object.getClass().getDeclaredMethods()) {
-                if (Modifier.isPublic(x.getModifiers())) {
-                    if (x.isAnnotationPresent(Produces.class)) {
-                        if (!x.getReturnType().equals(void.class)) {
+            for (Method method : object.getClass().getDeclaredMethods()) {
+                if (Modifier.isPublic(method.getModifiers())) {
+                    if (method.isAnnotationPresent(Produces.class)) {
+                        if (!method.getReturnType().equals(void.class)) {
                             result.add(new BeanDefinition(
-                                    x.getReturnType(), new MethodProvider(
-                                    x, object, methodInvoker), x));
+                                    method.getReturnType(), new MethodProvider(
+                                    method, object, methodInvoker), method));
                         }
                     }
                 }

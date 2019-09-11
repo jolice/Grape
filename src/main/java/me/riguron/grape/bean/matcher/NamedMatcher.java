@@ -22,6 +22,7 @@ public class NamedMatcher implements BeanMatcher {
         return injectionPoint != null && registeredBean.getAnnotationData().isAnnotationPresent(Named.class) && getNameValue(registeredBean.getAnnotationData()).equalsIgnoreCase(injectionPoint.value());
     }
 
+
     private String getNameValue(AnnotatedElement element) {
         return element.getDeclaredAnnotation(Named.class).value();
     }

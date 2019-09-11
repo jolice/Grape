@@ -1,7 +1,8 @@
 package me.riguron.grape.inject;
 
 import lombok.RequiredArgsConstructor;
-import me.riguron.grape.bean.BeanLookup;
+import me.riguron.grape.bean.lookup.BeanLookup;
+import me.riguron.grape.bean.lookup.StandardLookupParams;
 import me.riguron.grape.bean.registry.ManagedBean;
 import me.riguron.grape.reflection.MethodInvoker;
 
@@ -23,7 +24,7 @@ public class MethodInjection implements Injection {
                 Object[] targetBeanParams = new Object[method.getParameterCount()];
                 Parameter[] parameters = method.getParameters();
                 for (int i = 0; i < parameters.length; i++) {
-                    targetBeanParams[i] = beanRegistry.lookup(parameters[i].getType(), o.getClass(), parameters[i]).getBeanInstance();
+                    targetBeanParams[i] = beanRegistry.lookup(parameters[i].getType(), o.getClass(), new StandardLookupParams(parameters[i])).getBeanInstance();
                 }
 
                 methodInvoker.invoke(o, method, targetBeanParams);
