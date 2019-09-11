@@ -1,5 +1,6 @@
 package me.riguron.grape.bean.registry;
 
+import me.riguron.grape.annotation.Primary;
 import me.riguron.grape.bean.matcher.policy.BindingPolicy;
 import me.riguron.grape.bean.matcher.policy.OptionalPolicy;
 import me.riguron.grape.exception.ExceptionProvider;
@@ -11,6 +12,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class RegistryTest {
 
@@ -102,6 +104,42 @@ class RegistryTest {
                         )
                 ));
 
+
+    }
+
+    @Test
+    void whenAmbiguityButPrimaryExists() {
+
+        Registry<ManagedBean> registry =
+                new Registry<>();
+
+        AnnotatedElement element=  mock(AnnotatedElement.class);
+
+        when(element.isAnnotationPresent(Primary.class)).thenReturn(true);
+
+        registry.put(Integer.class, new ManagedBean(3, element));
+        registry.put(Integer.class, new ManagedBean(9, mock(AnnotatedElement.class)));
+
+        final ManagedBean managedBean = registry.get(
+                new BeanQuery(
+                        Integer.class,
+                        registeredBean -> false,
+                        new BindingPolicy() {
+                            @Override
+                            public boolean isMandatory() {
+                                return false;
+                            }
+
+                            @Override
+                            public ExceptionProvider unsatisfiedError() {
+                                throw new UnsupportedOperationException();
+                            }
+                        }
+                )
+        );
+
+        assertEquals(3,
+                managedBean.getBeanInstance());
 
     }
 

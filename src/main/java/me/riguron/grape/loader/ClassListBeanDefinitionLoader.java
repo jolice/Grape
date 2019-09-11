@@ -30,7 +30,14 @@ public class ClassListBeanDefinitionLoader implements BeanDefinitionLoader {
         final Optional<Constructor<?>> injectConstructor = constructorLookup.getInjectConstructor(beanType);
         return injectConstructor
                 .orElseGet(() -> constructorLookup.getEmptyConstructor(beanType)
-                        .orElseThrow(() -> new IllegalStateException("No constructor present for the injection: " + beanType)));
+                        .orElseThrow(() -> noConstructorError(beanType)));
+    }
+
+
+    private RuntimeException noConstructorError(Class<?> beanType) {
+        return new IllegalStateException("No constructor present for the injection: " + beanType + ". Make sure that either public empty constructor or " +
+                "constructor annotated with @Inject exists and check the access privileges of the class. Also, non-static inner classes are not supported for the injection.");
+
 
     }
 }

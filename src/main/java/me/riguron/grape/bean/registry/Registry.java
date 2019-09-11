@@ -48,10 +48,19 @@ public class Registry<T extends BeanMeta> {
 
     private T optionalGet(List<T> result, BeanQuery query) {
         if (result.size() > 1) {
-            return fail(query, new AmbiguousDependencyException("Multiple beans of type " + query.getType() + " found, which one is undefined"));
+            return findPrimary(result, query);
         } else {
             return result.get(0);
         }
+    }
+
+    private T findPrimary(List<T> result, BeanQuery beanQuery) {
+
+        return result.
+                stream()
+                .filter(BeanMeta::isPrimary)
+                .findFirst()
+                .orElseGet(() -> fail(beanQuery, new AmbiguousDependencyException("Multiple beans of type " + beanQuery.getType() + " found, which one is undefined")));
     }
 
     private T failNoBeans(BeanQuery beanQuery) {
