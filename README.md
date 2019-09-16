@@ -57,10 +57,6 @@ Grape grape = new Grape(new GrapeConfiguration().classes(
 Context context = grape.createContext();
 ```
 
-### Lifecycle callbacks
-
-Grape supports standard ```@PostConstruct``` and ```@PreDestroy``` annotations.
-
 ### Configuration
 
 A configuration is intended for defining beans through the factory methods. This is also known as a Java Configuration in Spring 
@@ -78,6 +74,10 @@ public class SomeConfiguration implements Configuration {
 
 }
 ```
+
+### Lifecycle callbacks
+
+Grape supports standard ```@PostConstruct``` and ```@PreDestroy``` annotations.
 
 # Injection point
 
