@@ -2,6 +2,7 @@ package me.riguron.grape.provider;
 
 
 import me.riguron.grape.dependency.Dependency;
+import me.riguron.grape.exception.reflection.InvocationException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -23,11 +24,11 @@ public class ConstructorProvider implements InstanceProvider {
     public Object createBean(List<Object> dependencies) {
         try {
             if (Modifier.isAbstract(constructor.getDeclaringClass().getModifiers())) {
-                throw new IllegalStateException("Instantiable component can not be abstract");
+                throw new InvocationException("Instantiable component can not be abstract");
             }
             return constructor.newInstance(dependencies.toArray());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException("Failed to create class instance - " + constructor.getDeclaringClass() + ", parameters - " + dependencies);
+            throw new InvocationException("Failed to create class instance - " + constructor.getDeclaringClass() + ", parameters - " + dependencies);
         }
     }
 

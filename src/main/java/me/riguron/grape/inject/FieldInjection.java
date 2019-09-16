@@ -24,7 +24,7 @@ public class FieldInjection implements Injection {
                 try {
                     field.set(o, fieldValue);
                 } catch (IllegalAccessException e) {
-                    throw new IllegalStateException("Failed to inject dependency into field", e);
+                    throw new IllegalStateException("Failed to inject dependency through the field", e);
                 }
             }
         }

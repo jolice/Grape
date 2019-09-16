@@ -45,6 +45,7 @@ class ContextLoadingTest {
 
     @Test
     void polymorphicLookups() {
+
         assertEquals(247, context.getBean(Interface.class, new NamedLookup("ImplementationOne")).getValue());
         assertEquals(227, context.getBean(Interface.class, new NamedLookup("ImplementationTwo")).getValue());
     }

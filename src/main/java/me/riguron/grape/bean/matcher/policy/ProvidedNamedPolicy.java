@@ -2,6 +2,7 @@ package me.riguron.grape.bean.matcher.policy;
 
 import lombok.RequiredArgsConstructor;
 import me.riguron.grape.exception.ExceptionProvider;
+import me.riguron.grape.exception.dependency.UnsatisfiedDependencyException;
 
 import javax.inject.Named;
 
@@ -17,6 +18,6 @@ public class ProvidedNamedPolicy implements BindingPolicy {
 
     @Override
     public ExceptionProvider unsatisfiedError() {
-        return () -> new IllegalStateException("No bean with name " + named.value());
+        return () -> new UnsatisfiedDependencyException("No bean with name " + named.value());
     }
 }

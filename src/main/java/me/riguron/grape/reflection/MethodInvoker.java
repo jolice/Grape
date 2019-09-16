@@ -11,7 +11,7 @@ public class MethodInvoker {
         try {
             return method.invoke(object, parameters);
         } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException("Method must be public in order to be invoked");
+            throw new InvocationException("Method must be public in order to be invoked", e);
         } catch (InvocationTargetException e) {
             throw new InvocationException(String.format("Failed to call method '%s' of class '%s'", method.getName(), object.getClass().getName()), e);
         }

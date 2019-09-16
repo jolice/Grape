@@ -40,6 +40,8 @@ public class TopologicalSort<V> {
         resultBuffer.add(item);
     }
 
+
+
     private void checkLoop(V item, V parent) {
         if (item == parent) {
             throw new GraphCycleException(item, parent);
@@ -54,5 +56,34 @@ public class TopologicalSort<V> {
         visited.add(v);
     }
 
+
+
+
+
+    abstract static class X<V extends X> {
+
+        abstract void x(V x);
+
+    }
+
+    public static void main(String[] args) {
+        byte i;
+        for(i=0;i<128;i++)
+            System.out.print(i);
+    }
+
+    class MyClass<X> {
+        <T> MyClass(T t) {
+            // ...
+        }
+    }
+
+    static class XX extends X<XX> {
+
+        @Override
+        void x(XX x) {
+
+        }
+    }
 
 }
