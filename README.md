@@ -2,6 +2,8 @@
 
 Basic proof of concept implementation of the IoC container.
 
+[![Build Status](https://travis-ci.org/riguron/Grape.svg?branch=master)](https://travis-ci.org/riguron/Grape)
+
 # Usage
 
 ```java
@@ -72,6 +74,10 @@ public class SomeConfiguration implements Configuration {
 
 }
 ```
+
+### Lifecycle callbacks
+
+Grape supports standard ```@PostConstruct``` and ```@PreDestroy``` annotations.
 
 # Injection point
 
