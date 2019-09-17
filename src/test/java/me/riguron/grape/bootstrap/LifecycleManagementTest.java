@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
 
-class LifecycleManagementTest {
+public class LifecycleManagementTest {
 
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")

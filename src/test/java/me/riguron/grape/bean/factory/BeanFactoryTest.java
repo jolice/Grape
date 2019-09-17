@@ -14,7 +14,7 @@ import java.util.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-class BeanFactoryTest {
+public class BeanFactoryTest {
 
     @Test
     void createBeans() {

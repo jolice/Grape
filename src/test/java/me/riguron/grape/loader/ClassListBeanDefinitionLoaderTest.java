@@ -23,13 +23,13 @@ class ClassListBeanDefinitionLoaderTest {
                 );
 
 
-         List<BeanDefinition> definitions = classListBeanDefinitionLoader.load();
+        List<BeanDefinition> definitions = classListBeanDefinitionLoader.load();
 
-         assertEquals(3, definitions.size());
+        assertEquals(3, definitions.size());
 
         final BeanDefinition first = definitions.get(0);
 
-        assertEquals(B.class,  first.getBeanClass());
+        assertEquals(B.class, first.getBeanClass());
         assertEquals(1, first.getConstructor().getDependencies().size());
 
 

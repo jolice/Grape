@@ -20,9 +20,9 @@ class MethodInjectionTest {
     @Test
     void inject() throws NoSuchMethodException {
 
-        putBean("x", "x");
-        putBean(1, "i");
-        putBean(1.5D, "d");
+        putBean("x");
+        putBean(1);
+        putBean(1.5D);
 
         Sample sample = new Sample();
         MethodInjection methodInjection =  new MethodInjection(lookup, new MethodInvoker());
@@ -53,7 +53,7 @@ class MethodInjectionTest {
 
     }
 
-    private void putBean(Object o, String name) throws NoSuchMethodException {
+    private void putBean(Object o) {
 
         when(lookup.lookup(eq(o.getClass()), any(), any()))
                 .thenReturn(

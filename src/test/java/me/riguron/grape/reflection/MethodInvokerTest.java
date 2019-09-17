@@ -1,5 +1,6 @@
 package me.riguron.grape.reflection;
 
+import me.riguron.grape.exception.reflection.InvocationException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +29,7 @@ class MethodInvokerTest {
         Instance instance = new Instance();
         MethodInvoker methodInvoker = new MethodInvoker();
 
-        assertThrows(IllegalArgumentException.class, () -> methodInvoker.invoke(
+        assertThrows(InvocationException.class, () -> methodInvoker.invoke(
                 instance, instance.getClass().getDeclaredMethod(
                         "privateMethod"
                 )

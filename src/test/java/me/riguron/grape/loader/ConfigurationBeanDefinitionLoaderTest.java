@@ -26,14 +26,14 @@ class ConfigurationBeanDefinitionLoaderTest {
                 result.size());
 
 
-        BeanDefinition first = result.get(0);
+        BeanDefinition first = result.get(1);
 
         assertEquals(String.class, first.getBeanClass());
 
         assertEquals(1, first.getConstructor().getDependencies().size());
         assertEquals(Integer.class, first.getConstructor().getDependencies().get(0).getType());
 
-        BeanDefinition second = result.get(1);
+        BeanDefinition second = result.get(0);
 
         assertEquals(Double.class, second.getBeanClass());
 
