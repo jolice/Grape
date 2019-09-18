@@ -4,7 +4,9 @@ Basic proof of concept implementation of the IoC container.
 
 [![Build Status](https://travis-ci.org/riguron/Grape.svg?branch=master)](https://travis-ci.org/riguron/Grape)
 [![codecov](https://codecov.io/gh/riguron/Grape/branch/master/graph/badge.svg)](https://codecov.io/gh/riguron/Grape)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/11310c3df3894caf9be6b01212f88977)](https://www.codacy.com/manual/riguron/Grape?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=riguron/Grape&amp;utm_campaign=Badge_Grade)
 [![HitCount](http://hits.dwyl.io/riguron/Grape.svg)](http://hits.dwyl.io/riguron/Grape)
+
 
 # Usage
 
