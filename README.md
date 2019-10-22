@@ -7,6 +7,28 @@ Basic proof of concept implementation of the IoC container.
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/11310c3df3894caf9be6b01212f88977)](https://www.codacy.com/manual/riguron/Grape?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=riguron/Grape&amp;utm_campaign=Badge_Grade)
 [![HitCount](http://hits.dwyl.io/riguron/Grape.svg)](http://hits.dwyl.io/riguron/Grape)
 
+# Dependency
+
+This project is distributed via JitPack. Register a JitPack repository at your pom.xml:
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+
+And add the following dependency:
+
+```xml
+<dependency>
+    <groupId>com.github.riguron</groupId>
+    <artifactId>Grape</artifactId>
+    <version>v1.0</version>
+</dependency>
+```
 
 # Usage
 
