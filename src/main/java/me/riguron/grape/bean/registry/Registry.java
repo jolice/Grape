@@ -7,14 +7,14 @@ import me.riguron.grape.exception.dependency.UnsatisfiedDependencyException;
 import me.riguron.grape.exception.injection.InjectionPointError;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Registry<T extends BeanMeta> {
 
-    private Map<Class<?>, BeanCollection<T>> data = new HashMap<>();
+    private Map<Class<?>, BeanCollection<T>> data = new ConcurrentHashMap<>();
 
     public void put(Class<?> type, T definition) {
         data.computeIfAbsent(type, aClass -> new BeanCollection<>()).put(definition);
@@ -38,24 +38,15 @@ public class Registry<T extends BeanMeta> {
                 if (beanQuery.getBindingPolicy().isMandatory()) {
                     return fail(beanQuery, beanQuery.getBindingPolicy().unsatisfiedError().exception());
                 } else {
-                    return optionalGet(items, beanQuery);
+                    return items.size() > 1 ? findPrimary(items, beanQuery) : items.get(0);
                 }
             } else {
-                return optionalGet(result, beanQuery);
+                return findPrimary(result, beanQuery);
             }
         }
     }
 
-    private T optionalGet(List<T> result, BeanQuery query) {
-        if (result.size() > 1) {
-            return findPrimary(result, query);
-        } else {
-            return result.get(0);
-        }
-    }
-
     private T findPrimary(List<T> result, BeanQuery beanQuery) {
-
         return result.
                 stream()
                 .filter(BeanMeta::isPrimary)
@@ -63,25 +54,15 @@ public class Registry<T extends BeanMeta> {
                 .orElseGet(() -> fail(beanQuery, new AmbiguousDependencyException("Multiple beans of type " + beanQuery.getType() + " found, which one is undefined")));
     }
 
-    private T failNoBeans(BeanQuery beanQuery) {
-        return fail(beanQuery, new UnsatisfiedDependencyException("No beans of type " + beanQuery.getType() + " found"));
-    }
 
     private T handleNoData(BeanQuery beanQuery) {
-        if (beanQuery.getBindingPolicy().isMandatory()) {
-            return fail(beanQuery, beanQuery.getBindingPolicy().unsatisfiedError().exception());
-        } else {
-            return failNoBeans(beanQuery);
-        }
+        return fail(beanQuery,  beanQuery.getBindingPolicy().isMandatory() ?
+                beanQuery.getBindingPolicy().unsatisfiedError().exception() :
+                new UnsatisfiedDependencyException("No beans of type " + beanQuery.getType() + " found"));
     }
 
-
     private <R> R fail(BeanQuery beanQuery, RuntimeException cause) {
-        if (beanQuery.getQuerySource() != null) {
-            throw new InjectionPointError(beanQuery.getQuerySource(), cause);
-        } else {
-            throw cause;
-        }
+        throw beanQuery.getQuerySource() != null ? new InjectionPointError(beanQuery.getQuerySource(), cause) : cause;
     }
 
     public Collection<T> getAll() {

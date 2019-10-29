@@ -33,8 +33,8 @@ class FieldInjectionTest {
 
 
         assertEquals("str val", sample.a);
-        assertEquals(1, sample.b);
-        assertEquals(1.5, sample.d);
+        assertEquals(1, sample.b.intValue());
+        assertEquals(1.5, sample.d.doubleValue());
     }
 
     private void putBean(Object o) {

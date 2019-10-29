@@ -30,8 +30,8 @@ class MethodInjectionTest {
 
 
         assertEquals("x", sample.x);
-        assertEquals(1, sample.i);
-        assertEquals(1.5D, sample.d);
+        assertEquals(1, sample.i.intValue());
+        assertEquals(1.5D, sample.d.doubleValue());
     }
 
     public static class Sample {

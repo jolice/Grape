@@ -42,6 +42,35 @@ public class RegistryTest {
     }
 
     @Test
+    void whenMultipleItemsFound() {
+        Registry<ManagedBean> registry =
+                new Registry<>();
+
+        registry.put(Integer.class, new ManagedBean(3, mock(AnnotatedElement.class)));
+        AnnotatedElement element = mock(AnnotatedElement.class);
+
+        when(element.isAnnotationPresent(Primary.class)).thenReturn(true);
+        registry.put(Integer.class, new ManagedBean(5, element));
+
+
+        ManagedBean managedBean = registry.get(new BeanQuery(Integer.class, bean -> true, new BindingPolicy() {
+            @Override
+            public boolean isMandatory() {
+                return true;
+            }
+
+            @Override
+            public ExceptionProvider unsatisfiedError() {
+                throw new UnsupportedOperationException();
+            }
+        }));
+
+        assertEquals(5, managedBean.getBeanInstance());
+
+    }
+
+    @Test
+
     void whenNoData() {
         Registry<ManagedBean> registry =
                 new Registry<>();
@@ -49,6 +78,27 @@ public class RegistryTest {
         assertThrows(UnsatisfiedDependencyException.class, () -> registry.get(
                 new BeanQuery(
                         Integer.class, registeredBean -> true, new OptionalPolicy()
+                )));
+    }
+
+    @Test
+    void whenNoDataAndPolicyIsMandatory() {
+        Registry<ManagedBean> registry =
+                new Registry<>();
+
+        assertThrows(SampleError.class, () -> registry.get(
+                new BeanQuery(
+                        Integer.class, registeredBean -> true, new BindingPolicy() {
+                    @Override
+                    public boolean isMandatory() {
+                        return true;
+                    }
+
+                    @Override
+                    public ExceptionProvider unsatisfiedError() {
+                        return SampleError::new;
+                    }
+                }
                 )));
     }
 
@@ -61,7 +111,7 @@ public class RegistryTest {
 
         assertThrows(SampleError.class,
                 () -> registry.get(
-                        new BeanQuery(String.class, registeredBean -> false, new BindingPolicy() {
+                        new BeanQuery(Integer.class, registeredBean -> false, new BindingPolicy() {
                             @Override
                             public boolean isMandatory() {
                                 return true;
@@ -113,7 +163,7 @@ public class RegistryTest {
         Registry<ManagedBean> registry =
                 new Registry<>();
 
-        AnnotatedElement element=  mock(AnnotatedElement.class);
+        AnnotatedElement element = mock(AnnotatedElement.class);
 
         when(element.isAnnotationPresent(Primary.class)).thenReturn(true);
 
