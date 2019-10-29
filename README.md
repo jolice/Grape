@@ -9,7 +9,7 @@ Basic proof of concept implementation of the IoC container.
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=riguron_Grape&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=riguron_Grape)
 [![HitCount](http://hits.dwyl.io/riguron/Grape.svg)](http://hits.dwyl.io/riguron/Grape)
 
-# Dependency
+## Dependency
 
 This project is distributed via JitPack. Register a JitPack repository at your pom.xml:
 
@@ -32,7 +32,7 @@ And add the following dependency:
 </dependency>
 ```
 
-# Usage
+## Usage
 
 ```java
 Grape grape = new Grape(new GrapeConfiguration()
@@ -45,7 +45,7 @@ Context context = grape.createContext();
 Sample sample = context.getBean(Sample.class);
 ```
 
-# Defining a bean
+## Defining a bean
 
 There are three ways to register a component in the Grape container. 
 
@@ -107,7 +107,7 @@ public class SomeConfiguration implements Configuration {
 
 Grape supports standard ```@PostConstruct``` and ```@PreDestroy``` annotations.
 
-# Injection point
+## Injection point
 
 ### Constructor injection
 
@@ -193,7 +193,7 @@ public Interface two() {
 }
 ```
 
-# Troubleshooting
+## Troubleshooting
 
 
 ### AmbiguousDependencyException
