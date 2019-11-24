@@ -7,12 +7,11 @@ import me.riguron.grape.dependency.Dependency;
 import me.riguron.grape.loader.BeanRegistration;
 import me.riguron.grape.provider.InstanceProvider;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
 
 import java.util.*;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static io.riguron.mocks.Mocks.*;
+import static io.riguron.mocks.matcher.ArgumentMatchers.*;
 
 public class BeanFactoryTest {
 
@@ -59,11 +58,14 @@ public class BeanFactoryTest {
 
 
         when(lookup.lookup(any(), any(), any())).thenAnswer(
-                invocationOnMock -> simpleStorage.get(invocationOnMock.getArgumentAt(0, Class.class)));
+                invocationOnMock -> {
+                    Class<?> type = invocationOnMock.getArgument(0);
+                    return simpleStorage.get(type);
+                });
 
         doAnswer(invocationOnMock -> {
-            simpleStorage.put(invocationOnMock.getArgumentAt(0, Class.class),
-                    invocationOnMock.getArgumentAt(1, ManagedBean.class));
+            simpleStorage.put(invocationOnMock.getArgument(0),
+                    invocationOnMock.getArgument(1));
             return null;
         }).when(registration).register(any(), any());
 
@@ -71,22 +73,14 @@ public class BeanFactoryTest {
         beanFactory.createBeans();
 
 
-        verify(registration).register(eq(A.class), argThat(new ArgumentMatcher<ManagedBean>() {
-            @Override
-            public boolean matches(Object o) {
-                ManagedBean managedBean = (ManagedBean) o;
-                A a = (A) managedBean.getBeanInstance();
-                return a.x == 5;
-            }
+        verify(registration).register(eq(A.class), argThat(o -> {
+            A a1 = (A) o.getBeanInstance();
+            return a1.x == 5;
         }));
 
-        verify(registration).register(eq(B.class), argThat(new ArgumentMatcher<ManagedBean>() {
-            @Override
-            public boolean matches(Object o) {
-                ManagedBean managedBean = (ManagedBean) o;
-                B b = (B) managedBean.getBeanInstance();
-                return b.a != null && b.a.x == 5;
-            }
+        verify(registration).register(eq(B.class), argThat(o -> {
+            B b1 = (B) o.getBeanInstance();
+            return b1.a != null && b1.a.x == 5;
         }));
 
     }

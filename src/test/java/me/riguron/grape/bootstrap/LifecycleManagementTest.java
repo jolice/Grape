@@ -8,9 +8,18 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.mockito.Mockito.*;
+import static io.riguron.mocks.Mocks.*;
+import static io.riguron.mocks.matcher.ArgumentMatchers.any;
+import static io.riguron.mocks.matcher.ArgumentMatchers.eq;
+
 
 public class LifecycleManagementTest {
+
+
+    interface X {
+
+        int b();
+    }
 
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -39,8 +48,10 @@ public class LifecycleManagementTest {
 
         lifecycleManagement.triggerBeanInitialization();
 
+
         verify(postConstruct).trigger(eq(a.getBeanInstance()));
         verify(postConstruct).trigger(eq(b.getBeanInstance()));
+
     }
 
     @Test
@@ -63,7 +74,7 @@ public class LifecycleManagementTest {
         Runtime runtime = mock(Runtime.class);
 
         doAnswer(invocationOnMock -> {
-            Thread thread = invocationOnMock.getArgumentAt(0, Thread.class);
+            Thread thread = invocationOnMock.getArgument(0);
             // intentionally called run instead of start, to trigger execution in the main thread
             thread.run();
             return null;
@@ -72,7 +83,7 @@ public class LifecycleManagementTest {
         LifecycleManagement lifecycleManagement
                 = new LifecycleManagement(
                 registry,
-               runtime,
+                runtime,
                 factory
         );
 

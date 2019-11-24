@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.AnnotatedElement;
 
+import static io.riguron.mocks.Mocks.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static io.riguron.mocks.matcher.ArgumentMatchers.any;
+import static io.riguron.mocks.Mocks.mock;
 
 class LookupParamsTest {
 
@@ -29,7 +29,7 @@ class LookupParamsTest {
         Registry<BeanDefinition> registry = mock(Registry.class);
 
         BeanDefinition beanDefinition = mock(BeanDefinition.class);
-        when(beanDefinition.getBeanClass()).thenAnswer(invocationOnMock -> storeType);
+        when(beanDefinition.getBeanClass()).thenAnswer(x -> storeType);
 
         when(registry.get(
                 any()

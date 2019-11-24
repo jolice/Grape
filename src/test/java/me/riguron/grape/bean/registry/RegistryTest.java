@@ -10,11 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.AnnotatedElement;
 
+import static io.riguron.mocks.Mocks.mock;
+import static io.riguron.mocks.Mocks.when;
+import static io.riguron.mocks.matcher.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class RegistryTest {
+
 
     @Test
     void plainPutAndGet() {
@@ -49,7 +51,7 @@ public class RegistryTest {
         registry.put(Integer.class, new ManagedBean(3, mock(AnnotatedElement.class)));
         AnnotatedElement element = mock(AnnotatedElement.class);
 
-        when(element.isAnnotationPresent(Primary.class)).thenReturn(true);
+        when(element.isAnnotationPresent(eq(Primary.class))).thenReturn(true);
         registry.put(Integer.class, new ManagedBean(5, element));
 
 
@@ -70,7 +72,6 @@ public class RegistryTest {
     }
 
     @Test
-
     void whenNoData() {
         Registry<ManagedBean> registry =
                 new Registry<>();
@@ -165,7 +166,7 @@ public class RegistryTest {
 
         AnnotatedElement element = mock(AnnotatedElement.class);
 
-        when(element.isAnnotationPresent(Primary.class)).thenReturn(true);
+        when(element.isAnnotationPresent(eq(Primary.class))).thenReturn(true);
 
         registry.put(Integer.class, new ManagedBean(3, element));
         registry.put(Integer.class, new ManagedBean(9, mock(AnnotatedElement.class)));

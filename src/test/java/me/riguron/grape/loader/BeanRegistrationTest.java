@@ -4,10 +4,10 @@ import me.riguron.grape.bean.BeanDefinition;
 import me.riguron.grape.bean.registry.Registry;
 import org.junit.jupiter.api.Test;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static io.riguron.mocks.Mocks.verify;
+import static io.riguron.mocks.matcher.ArgumentMatchers.any;
+import static io.riguron.mocks.matcher.ArgumentMatchers.eq;
+import static io.riguron.mocks.Mocks.mock;
 
 class BeanRegistrationTest {
 

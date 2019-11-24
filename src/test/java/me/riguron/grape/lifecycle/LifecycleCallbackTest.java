@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import javax.annotation.PostConstruct;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static io.riguron.mocks.Mocks.mock;
+import static io.riguron.mocks.Mocks.verify;
+import static io.riguron.mocks.verify.VerificationModes.times;
 
 class LifecycleCallbackTest {
 

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Named;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
+import static io.riguron.mocks.Mocks.mock;
 
 class NamedMatcherTest {
 

@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
+import static io.riguron.mocks.Mocks.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static io.riguron.mocks.matcher.ArgumentMatchers.any;
+import static io.riguron.mocks.matcher.ArgumentMatchers.eq;
+import static io.riguron.mocks.Mocks.mock;
 
 class FieldInjectionTest {
 
@@ -38,6 +38,7 @@ class FieldInjectionTest {
     }
 
     private void putBean(Object o) {
+
 
         when(lookup.lookup(eq(o.getClass()), any(), any()))
                 .thenReturn(
