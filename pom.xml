@@ -7,6 +7,15 @@
     <groupId>Grape</groupId>
     <artifactId>Grape</artifactId>
     <version>1.0</version>
+
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
@@ -75,10 +84,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>Mocks</groupId>
+            <groupId>com.github.riguron</groupId>
             <artifactId>Mocks</artifactId>
-            <version>1.0</version>
-            <scope>test</scope>
+            <version>v1.0</version>
         </dependency>
 
 
