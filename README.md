@@ -45,12 +45,12 @@ Context context = grape.createContext();
 Sample sample = context.getBean(Sample.class);
 ```
 
-## Defining a bean
+### Defining a bean
 
 There are three ways to register a component in the Grape container. 
 
 
-### Component scanning
+#### Component scanning
 
 Annotate a class with ```@Component``` so it will be detected by the component scanning
 
@@ -69,7 +69,7 @@ Grape grape = new Grape(new GrapeConfiguration().scan("com.example.beans"));
 Context context = grape.createContext();
 ```
 
-### Manual registration
+#### Manual registration
 
 ```java
 public class SomeComponent {
@@ -85,7 +85,7 @@ Grape grape = new Grape(new GrapeConfiguration().classes(
 Context context = grape.createContext();
 ```
 
-### Configuration
+#### Configuration
 
 A configuration is intended for defining beans through the factory methods. This is also known as a Java Configuration in Spring 
 Framework. 
@@ -103,13 +103,13 @@ public class SomeConfiguration implements Configuration {
 }
 ```
 
-### Lifecycle callbacks
+#### Lifecycle callbacks
 
 Grape supports standard ```@PostConstruct``` and ```@PreDestroy``` annotations.
 
-## Injection point
+### Injection point
 
-### Constructor injection
+#### Constructor injection
 
 
 ```java
@@ -120,7 +120,7 @@ public YourComponent(DependencyA dependencyA, DependencyB dependencyB) {
 }
 ```    
    
-### Setter injection
+#### Setter injection
 
 ```java
 @Inject
@@ -129,14 +129,14 @@ public void setDependency(Dependency dependency) {
 }
 ```   
 
-### Field injection
+#### Field injection
 
 ```java
 @Inject
 private Dependency dependency;
 ```  
 
-# Qualifying bean
+## Qualifying bean
 
 If there are multiple beans of the same type defined, the injection point must qualify the bean to be injected
 by specifying its name using ```@Named``` annotation.
@@ -173,7 +173,7 @@ The named bean may manually obtained from the context as follows:
 Interface i = context.getBean(Interface.class, new NamedLookup("ImplementationOne"));
 ```
 
-### Bean priority
+#### Bean priority
 
 ```@Primary``` annotation is another way to resolve the bean ambiguity. If there are multiple bean candidates for the 
 injection point and one of them is defined with this annotation, it should be given a preference. That is, this annotation
@@ -193,28 +193,28 @@ public Interface two() {
 }
 ```
 
-## Troubleshooting
+### Troubleshooting
 
 
-### AmbiguousDependencyException
+#### AmbiguousDependencyException
 
 This exception is fired when there are multiple candidates for the injection point and none of them is
 qualified at this point. Specify a bean to be injected through the ```@Named``` mark one of the candidates
 as a priority one using ```@Primary``` annotation.
 
-### CircularDependencyException
+#### CircularDependencyException
 
 This exception indicates a circular constructor dependency between two beans. It means that constructor
 of bean A accepts bean of type B as a parameter and constructor of bean B accepts bean of type A as a parameter.
 This may be eliminated by injecting one of dependencies involved in a loop through the setter. 
 
-### UnsatisfiedDependencyException
+#### UnsatisfiedDependencyException
 
 This exception is raised when there are no candidates for the injection in the conatiner, i.e Grape is unable
 to resolve the dependency for some reason. It may happen because there are no beans of the dependency type
 defined or there is no bean with the specified name. Examine the exception message for more details.
 
-### InvocationException
+#### InvocationException
 
 This is a reflection-related exception indicating that an invocation of a reflective component is failed due to some 
 reason. As usual, this exception is caused by insufficient access privileges or by a error raised within the invoked
