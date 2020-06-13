@@ -2,7 +2,7 @@
 
 Basic proof of concept implementation of the IoC container.
 
-[![Build Status](https://travis-ci.org/riguron/Grape.svg?branch=master)](https://travis-ci.org/riguron/Grape)
+[![Build Status](https://travis-ci.org/jolice/Grape.svg?branch=master)](https://travis-ci.org/jolice/Grape)
 [![codecov](https://codecov.io/gh/riguron/Grape/branch/master/graph/badge.svg)](https://codecov.io/gh/riguron/Grape)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/11310c3df3894caf9be6b01212f88977)](https://www.codacy.com/manual/riguron/Grape?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=riguron/Grape&amp;utm_campaign=Badge_Grade)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=riguron_Grape&metric=alert_status)](https://sonarcloud.io/dashboard?id=riguron_Grape)
@@ -25,7 +25,7 @@ And add the following dependency:
 
 ```xml
 <dependency>
-    <groupId>com.github.riguron</groupId>
+    <groupId>com.github.jolice</groupId>
     <artifactId>Grape</artifactId>
     <version>v1.0</version>
 </dependency>
