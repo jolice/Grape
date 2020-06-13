@@ -7,7 +7,6 @@ Basic proof of concept implementation of the IoC container.
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/11310c3df3894caf9be6b01212f88977)](https://www.codacy.com/manual/riguron/Grape?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=riguron/Grape&amp;utm_campaign=Badge_Grade)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=riguron_Grape&metric=alert_status)](https://sonarcloud.io/dashboard?id=riguron_Grape)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=riguron_Grape&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=riguron_Grape)
-[![HitCount](http://hits.dwyl.io/riguron/Grape.svg)](http://hits.dwyl.io/riguron/Grape)
 
 ## Dependency
 
